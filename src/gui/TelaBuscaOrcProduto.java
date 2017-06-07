@@ -207,7 +207,11 @@ public class TelaBuscaOrcProduto extends javax.swing.JFrame {
         FuncionarioDAO funcionarioDAO = new FuncionarioDAO();
         OrcamentoDAO orcamentoDAO = new OrcamentoDAO();
         if(jRadioButton1.isSelected()){
-        
+            if(jRadioButton3.isSelected()){
+            
+            }else if(jRadioButton5.isSelected()){
+            
+            }
         }
         else if(jRadioButton2.isSelected()){
             if(jRadioButton4.isSelected()){

@@ -22,7 +22,7 @@ public class ProdutoDAO {
         PreparedStatement sql;
         try{
             sql=(PreparedStatement) BancoDados.getInstance().prepareStatement
-            ("insert into produto(idProduto, nomeProduto, valorCompra, valorVenda, qnt, dataCadastro, descricao) values (?, ?, ?, ?, ?, ?, ?)");
+            ("insert into produto(idProduto, nomeProduto, valorCompraProduto, valorVendaProduto, qtdProduto, dataCadastro, descProduto) values (?, ?, ?, ?, ?, ?, ?)");
             sql.setInt(1,produto.getCod());
             sql.setString(2,produto.getNome());
             sql.setDouble(3,produto.getValorCompra());
