@@ -175,8 +175,8 @@ public class TelaResultadosBuscaProduto extends javax.swing.JFrame {
         // TODO add your handling code here:[]
         int linha = jTable1.getSelectedRow();
         prodselec = produtos.get(linha);
-        TelaEditarFunc p = new TelaEditarFunc();
-        p.setTitle("Editar Cliente");
+        TelaEditarProd p = new TelaEditarProd();
+        p.setTitle("Editar Produto");
         p.setVisible(true);
         
     }//GEN-LAST:event_jButton1ActionPerformed

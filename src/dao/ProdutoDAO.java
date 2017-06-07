@@ -91,6 +91,25 @@ public class ProdutoDAO {
     return produtos;
     }
     
+    public void alterar(Produto produto){
+        PreparedStatement sql;
+        try{
+            sql=(PreparedStatement) BancoDados.getInstance().prepareStatement
+            ("update produto set valorCompraProduto=?, valorVendaProduto=?, qtdProduto=?, nomeProduto=?, descProduto=?, dataCadastro=? where idProduto=?"); 
+            sql.setDouble(1, produto.getValorCompra());
+            sql.setDouble(2, produto.getValorVenda());
+            sql.setInt(3, produto.getQnt());
+            sql.setString(4, produto.getNome());
+            sql.setString(5, produto.getDescricao());
+            sql.setString(6, produto.getDataCadastro());
+            sql.setInt(7, produto.getCod());
+            sql.execute();
+        }
+        catch(SQLException ex) {
+          System.out.println(ex);
+        }
+    }
+    
     public void excluir (Produto produto){
         PreparedStatement sql;
         try{
