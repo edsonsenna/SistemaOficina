@@ -5,9 +5,8 @@
  */
 package gui;
 
-import bean.Funcionario;
-import bean.Pessoa;
-import dao.FuncionarioDAO;
+import bean.Produto;
+import dao.ProdutoDAO;
 import java.util.ArrayList;
 import java.util.Vector;
 import javax.swing.JOptionPane;
@@ -17,9 +16,9 @@ import javax.swing.table.DefaultTableModel;
  * @author 13151000162
  */
 public class TelaResultadosBuscaProduto extends javax.swing.JFrame {
-    ArrayList<Funcionario> funcionarios = new ArrayList<>();
-    Funcionario funcselec = new Funcionario();
-    FuncionarioDAO funcionarioDAO = new FuncionarioDAO();
+    ArrayList<Produto> produtos = new ArrayList<>();
+    Produto prodselec = new Produto();
+    ProdutoDAO produtoDAO = new ProdutoDAO();
     /**
      * Creates new form TelaResultadosBuscaCliente
      * @param pessoas
@@ -32,22 +31,20 @@ public class TelaResultadosBuscaProduto extends javax.swing.JFrame {
      *
      * @param p
      */
-    public void RecebeVetor(ArrayList<Funcionario> p){
-        this.funcionarios = p;
+    public void RecebeVetor(ArrayList<Produto> p){
+        this.produtos = p;
         DefaultTableModel modelo = (DefaultTableModel) jTable1.getModel();
         modelo.setNumRows(0);
         
-        for (Funcionario funcionario : funcionarios) {  
+        for (Produto produto : produtos) {  
             Vector linha = new Vector();  
-            linha.add(funcionario.getCod());
-            linha.add(funcionario.getNome());
-            linha.add(funcionario.getCpf());
-            linha.add(funcionario.getEnd());
-            linha.add(funcionario.getEmail());
-            linha.add(funcionario.getTel());
-            linha.add("15/12/2012");
-            linha.add(funcionario.getSetor());
-            linha.add(funcionario.getSalario());
+            linha.add(produto.getCod());
+            linha.add(produto.getNome());
+            linha.add(produto.getValorVenda());
+            linha.add(produto.getValorCompra());
+            linha.add(produto.getQnt());
+            linha.add(produto.getDescricao());
+            linha.add(produto.getDataCadastro());
             modelo.addRow(linha);
         }
     }
@@ -76,20 +73,20 @@ public class TelaResultadosBuscaProduto extends javax.swing.JFrame {
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null}
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null}
             },
             new String [] {
-                "Cod", "Nome", "Cpf", "End", "Email", "Tel", "Data Cadastro", "Setor", "Salário"
+                "Cod", "Nome", "ValorVenda", "ValorCompra", "Quantidade", "Descrição", "Data Cadastro"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Double.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.Double.class, java.lang.Double.class, java.lang.Integer.class, java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false, false, false
+                false, false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -177,7 +174,7 @@ public class TelaResultadosBuscaProduto extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:[]
         int linha = jTable1.getSelectedRow();
-        funcselec = funcionarios.get(linha);
+        prodselec = produtos.get(linha);
         TelaEditarFunc p = new TelaEditarFunc();
         p.setTitle("Editar Cliente");
         p.setVisible(true);
@@ -187,12 +184,12 @@ public class TelaResultadosBuscaProduto extends javax.swing.JFrame {
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
         int linha = jTable1.getSelectedRow();
-        funcselec = funcionarios.get(linha);
+        prodselec = produtos.get(linha);
         int dialogButton = JOptionPane.YES_NO_OPTION;
         int dialogResult = JOptionPane.showConfirmDialog (null, "Deseja realmente excluir o(a) cliente?","Cuidado", dialogButton);
         if(dialogResult == JOptionPane.YES_OPTION){
             // Saving code here
-            funcionarioDAO.excluir(funcselec);
+            produtoDAO.excluir(prodselec);
         }
         
     }//GEN-LAST:event_jButton2ActionPerformed

@@ -37,23 +37,23 @@ public class ProdutoDAO {
         }
     }
     
-    public ArrayList consultar(){
+    public ArrayList consultarN(String nome){
     PreparedStatement sql; 
     ArrayList produtos = new ArrayList();
     try{
         sql=(PreparedStatement) BancoDados.getInstance().prepareStatement
-        ("SELECT * FROM produto");
+        ("SELECT * FROM produto WHERE nomeProduto like '%"+nome+"%' ");
         ResultSet rs = sql.executeQuery();
 
         while(rs.next()){
             Produto produto = new Produto();
-            produto.setCod(rs.getInt("idCliente"));
-            produto.setNome(rs.getString("nomeCliente"));
-            produto.setValorCompra(rs.getDouble("valorCompra"));
-            produto.setValorVenda(rs.getDouble("valorVenda"));
-            produto.setQnt(rs.getInt("qnt"));
+            produto.setCod(rs.getInt("idProduto"));
+            produto.setNome(rs.getString("nomeProduto"));
+            produto.setValorCompra(rs.getDouble("valorCompraProduto"));
+            produto.setValorVenda(rs.getDouble("valorVendaProduto"));
+            produto.setQnt(rs.getInt("qtdProduto"));
             produto.setDataCadastro(rs.getString("dataCadastro"));
-            produto.setDescricao(rs.getString("descricao"));
+            produto.setDescricao(rs.getString("descProduto"));
             produtos.add(produto);
         }// fim do while
 
@@ -62,5 +62,46 @@ public class ProdutoDAO {
       System.out.println(ex);
     }
     return produtos;
+    }
+    
+    public ArrayList consultarC(Integer cod){
+    PreparedStatement sql; 
+    ArrayList produtos = new ArrayList();
+    try{
+        sql=(PreparedStatement) BancoDados.getInstance().prepareStatement
+        ("SELECT * FROM produto WHERE idProduto like '%"+cod+"%'");
+        ResultSet rs = sql.executeQuery();
+
+        while(rs.next()){
+            Produto produto = new Produto();
+            produto.setCod(rs.getInt("idProduto"));
+            produto.setNome(rs.getString("nomeProduto"));
+            produto.setValorCompra(rs.getDouble("valorCompraProduto"));
+            produto.setValorVenda(rs.getDouble("valorVendaProduto"));
+            produto.setQnt(rs.getInt("qtdProduto"));
+            produto.setDataCadastro(rs.getString("dataCadastro"));
+            produto.setDescricao(rs.getString("descProduto"));
+            produtos.add(produto);
+        }// fim do while
+
+    }// fim do try
+    catch(SQLException ex) {
+      System.out.println(ex);
+    }
+    return produtos;
+    }
+    
+    public void excluir (Produto produto){
+        PreparedStatement sql;
+        try{
+            sql=(PreparedStatement) BancoDados.getInstance().prepareStatement 
+            ("DELETE from produto where idProduto=?");
+            sql.setInt(1, produto.getCod());
+            sql.execute();
+            
+        }
+        catch(SQLException ex){
+            System.out.println(ex);
+        }
     }
 }

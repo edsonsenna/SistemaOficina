@@ -4,9 +4,11 @@ package gui;
 import bean.Funcionario;
 import bean.Orcamento;
 import bean.Pessoa;
+import bean.Produto;
 import dao.FuncionarioDAO;
 import dao.OrcamentoDAO;
 import dao.PessoaDAO;
+import dao.ProdutoDAO;
 import java.util.ArrayList;
 import javax.swing.ButtonModel;
 import javax.swing.JOptionPane;
@@ -200,18 +202,21 @@ public class TelaBuscaOrcProduto extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        ArrayList<Pessoa> pessoas = new ArrayList<>();
-        ArrayList<Funcionario> funcionarios = new ArrayList<>();
+        ArrayList<Produto> produtos =  new ArrayList<>();
         ArrayList<Orcamento> orcamentos = new ArrayList<>();
-        PessoaDAO pessoaDAO = new PessoaDAO();
-        FuncionarioDAO funcionarioDAO = new FuncionarioDAO();
+        ProdutoDAO produtoDAO = new ProdutoDAO();
         OrcamentoDAO orcamentoDAO = new OrcamentoDAO();
         if(jRadioButton1.isSelected()){
             if(jRadioButton3.isSelected()){
-            
+                produtos = produtoDAO.consultarN(jTextField1.getText());
             }else if(jRadioButton5.isSelected()){
-            
+                produtos = produtoDAO.consultarC(Integer.parseInt(jTextField3.getText()));
             }
+            TelaResultadosBuscaProduto p = new TelaResultadosBuscaProduto();
+            p.RecebeVetor(produtos);
+            p.setTitle("Busca Produtos");
+            p.setVisible(true);
+            this.dispose();
         }
         else if(jRadioButton2.isSelected()){
             if(jRadioButton4.isSelected()){
