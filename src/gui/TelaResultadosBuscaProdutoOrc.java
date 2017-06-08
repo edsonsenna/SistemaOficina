@@ -168,8 +168,13 @@ public class TelaResultadosBuscaProdutoOrc extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:[]
         int linha = jTable1.getSelectedRow();
-        prodselec = produtos.get(linha);
-        System.out.println(prodselec.getNome());
+        prodselec.setCod(produtos.get(linha).getCod());
+        prodselec.setDataCadastro(produtos.get(linha).getDataCadastro());
+        prodselec.setDescricao(produtos.get(linha).getDescricao());
+        prodselec.setNome(produtos.get(linha).getNome());
+        prodselec.setQnt(produtos.get(linha).getQnt());
+        prodselec.setValorCompra(produtos.get(linha).getValorCompra());
+        prodselec.setValorVenda(produtos.get(linha).getValorVenda());
         this.dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
 
