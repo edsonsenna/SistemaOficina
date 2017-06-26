@@ -80,7 +80,31 @@ public class PessoaDAO {
         }
         return pessoas;
     }
-    
+    public ArrayList consultar(){
+        PreparedStatement sql; 
+        ArrayList pessoas = new ArrayList();
+        try{
+                sql=(PreparedStatement) BancoDados.getInstance().prepareStatement
+                ("SELECT * FROM cliente");
+                //sql.setString(1, param);
+                ResultSet rs = sql.executeQuery();
+                while(rs.next()){
+                    Pessoa pessoa = new Pessoa();
+                    pessoa.setCod(rs.getInt("idCliente"));
+                    pessoa.setNome(rs.getString("nomeCliente"));
+                    pessoa.setSexo(rs.getString("sexoCliente"));
+                    pessoa.setCpf(rs.getString("cpfCliente"));
+                    pessoa.setEnd(rs.getString("endCliente"));
+                    pessoa.setEmail(rs.getString("emailCliente"));
+                    pessoa.setTel(rs.getString("telCliente"));
+                    pessoas.add(pessoa);
+                }
+        }// fim do try
+        catch(SQLException ex) {
+          System.out.println(ex);
+        }
+        return pessoas;
+    }
     public ArrayList consultar(Integer param){
         PreparedStatement sql; 
         ArrayList pessoas = new ArrayList();

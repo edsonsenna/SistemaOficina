@@ -107,7 +107,7 @@ public class TelaResultadosBuscaFuncionario extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(jTable1);
 
-        jLabel1.setText("Lista de Clientes");
+        jLabel1.setText("Lista de Funcionários");
 
         jButton1.setText("Editar");
         jButton1.addActionListener(new java.awt.event.ActionListener() {

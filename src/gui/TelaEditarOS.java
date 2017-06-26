@@ -8,8 +8,10 @@ import javax.swing.JFormattedTextField;
 import javax.swing.JOptionPane;
 
 import bean.Orcamento;
+import bean.OrdemDeServico;
 import bean.Pessoa;
 import dao.OrcamentoDAO;
+import dao.OrdemDeServicoDAO;
 import dao.PessoaDAO;
 import java.util.ArrayList;
 
@@ -23,7 +25,7 @@ import java.util.ArrayList;
  *
  * @author 13151000162
  */
-public class TelaEditarOrc extends javax.swing.JFrame {
+public class TelaEditarOS extends javax.swing.JFrame {
 
     private Component frame;
     private String codCliente;
@@ -33,11 +35,11 @@ public class TelaEditarOrc extends javax.swing.JFrame {
     /**
      * Creates new form TelaCadastro
      */
-    public TelaEditarOrc() {
+    public TelaEditarOS() {
         initComponents();
     }
     
-    public void recebeCod(Orcamento orcselec, int cod){
+    public void recebeCod(OrdemDeServico osSelec, int cod){
         this.codCliente = Integer.toString(cod);
         PessoaDAO pessoaDAO = new PessoaDAO();
         ArrayList<Pessoa> pessoas = new ArrayList();
@@ -50,10 +52,10 @@ public class TelaEditarOrc extends javax.swing.JFrame {
         jButton2.setEnabled(false);
         jTextField2.setText(codCliente);
         jTextField1.setText(nomeCliente);
-        jTextField5.setText(Integer.toString(orcselec.getCodFuncionario()));
-        jTextField3.setText(Double.toString(orcselec.getValor()));
-        jTextField6.setText(Integer.toString(orcselec.getCod()));
-        jTextField4.setText(orcselec.getDescricao());
+        jTextField5.setText(Integer.toString(osSelec.getCodFuncionario()));
+        jTextField3.setText(Double.toString(osSelec.getValor()));
+        jTextField6.setText(Integer.toString(osSelec.getCod()));
+        jTextField4.setText(osSelec.getDescricao());
     }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -86,7 +88,7 @@ public class TelaEditarOrc extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jLabel1.setText("Editar Orçamento");
+        jLabel1.setText("Editar OS");
 
         jLabel2.setText("Nome Cliente:");
 
@@ -154,6 +156,12 @@ public class TelaEditarOrc extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addGap(174, 174, 174)
+                .addComponent(jButton1)
+                .addGap(32, 32, 32)
+                .addComponent(jButton3)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
                 .addContainerGap(21, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
@@ -197,12 +205,6 @@ public class TelaEditarOrc extends javax.swing.JFrame {
                                     .addGap(4, 4, 4)
                                     .addComponent(jFormattedTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE))))))
                 .addContainerGap(22, Short.MAX_VALUE))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(170, 170, 170)
-                .addComponent(jButton1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton3)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -246,21 +248,20 @@ public class TelaEditarOrc extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-    	Orcamento orcamento = new Orcamento();
-    	orcamento.setCodCliente(Integer.parseInt(jTextField2.getText()));
-    	orcamento.setCodFuncionario(Integer.parseInt(jTextField5.getText()));
-    	orcamento.setValor(Double.parseDouble(jTextField3.getText()));
-    	orcamento.setCod(Integer.parseInt(jTextField6.getText()));
-    	orcamento.setDataCadastro(jFormattedTextField1.getText());
-    	orcamento.setDescricao(jTextField4.getText());
-    	OrcamentoDAO orcamentoDAO = new OrcamentoDAO();
-    	orcamentoDAO.alterar(orcamento);
-        JOptionPane.showMessageDialog(frame, "Orçamento alterado com sucesso!");
+    	OrdemDeServico ordemdeservico = new OrdemDeServico();
+    	ordemdeservico.setCodCliente(Integer.parseInt(jTextField2.getText()));
+    	ordemdeservico.setCodFuncionario(Integer.parseInt(jTextField5.getText()));
+    	ordemdeservico.setValor(Double.parseDouble(jTextField3.getText()));
+    	ordemdeservico.setCod(Integer.parseInt(jTextField6.getText()));
+    	ordemdeservico.setDataCadastro(jFormattedTextField1.getText());
+    	ordemdeservico.setDescricao(jTextField4.getText());
+    	OrdemDeServicoDAO ordemdeservicoDAO = new OrdemDeServicoDAO();
+    	ordemdeservicoDAO.alterar(ordemdeservico);
+        JOptionPane.showMessageDialog(frame, "Ordem de serviço alterado com sucesso!");
         TelaPrincipal p = new TelaPrincipal();
         p.setTitle("Tela Principal");
         p.setVisible(true);
         this.dispose();
-        
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jTextField4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField4ActionPerformed
@@ -334,7 +335,7 @@ public class TelaEditarOrc extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new TelaEditarOrc().setVisible(true);
+                new TelaEditarOS().setVisible(true);
             }
         });
     }

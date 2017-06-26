@@ -17,6 +17,8 @@ import javax.swing.table.DefaultTableModel;
  */
 public class TelaResultadosBuscaProdutoOrc extends javax.swing.JFrame {
     ArrayList<Produto> produtos = new ArrayList<>();
+    ArrayList<Produto> listaProd = new ArrayList<>();
+    ArrayList<Integer> listaProdCod = new ArrayList<>();
     Produto prodselec = new Produto();
     ProdutoDAO produtoDAO = new ProdutoDAO();
     /**
@@ -175,6 +177,8 @@ public class TelaResultadosBuscaProdutoOrc extends javax.swing.JFrame {
         prodselec.setQnt(produtos.get(linha).getQnt());
         prodselec.setValorCompra(produtos.get(linha).getValorCompra());
         prodselec.setValorVenda(produtos.get(linha).getValorVenda());
+        listaProd.add(prodselec);
+        listaProdCod.add(prodselec.getCod());
         this.dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
 

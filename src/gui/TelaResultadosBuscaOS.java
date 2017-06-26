@@ -5,7 +5,7 @@
  */
 package gui;
 
-import bean.Orcamento;
+import bean.OrdemDeServico;
 import dao.OrdemDeServicoDAO;
 import dao.OrcamentoDAO;
 import java.sql.SQLException;
@@ -19,16 +19,15 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author 13151000162
  */
-public class TelaResultadosBuscaOrc extends javax.swing.JFrame {
-    ArrayList<Orcamento> orcamentos = new ArrayList<>();
-    Orcamento orcselec = new Orcamento();
-    OrcamentoDAO orcamentoDAO = new OrcamentoDAO();
+public class TelaResultadosBuscaOS extends javax.swing.JFrame {
+    ArrayList<OrdemDeServico> ordemdeservicos = new ArrayList<>();
+    OrdemDeServico osSelec = new OrdemDeServico();
     OrdemDeServicoDAO ordemdeservicoDAO = new OrdemDeServicoDAO();
     /**
      * Creates new form TelaResultadosBuscaCliente
      * @param pessoas
      */
-    public TelaResultadosBuscaOrc() {
+    public TelaResultadosBuscaOS() {
         initComponents();
     }
     
@@ -36,27 +35,28 @@ public class TelaResultadosBuscaOrc extends javax.swing.JFrame {
      *
      * @param p
      */
-    public void RecebeVetor(ArrayList<Orcamento> p){
-        this.orcamentos = p;
+    public void RecebeVetor(ArrayList<OrdemDeServico> p){
+        this.ordemdeservicos = p;
         DefaultTableModel modelo = (DefaultTableModel) jTable1.getModel();
         modelo.setNumRows(0);
         
-        for (Orcamento orcamento : orcamentos) {  
+        for (OrdemDeServico os : ordemdeservicos) {  
             Vector linha = new Vector();  
-            linha.add(orcamento.getCod());
-            linha.add(orcamento.getCodCliente());
-            linha.add(orcamento.getCodFuncionario());
-            linha.add(orcamento.getDataCadastro());
-            linha.add(orcamento.getDescricao());
-            linha.add(orcamento.getValor());
+            linha.add(os.getCod());
+            linha.add(os.getCodCliente());
+            linha.add(os.getCodFuncionario());
+            linha.add(os.getDataCadastro());
+            linha.add(os.getDescricao());
+            linha.add(os.getValor());
+            if(os.isStatusOS()){
+                linha.add("Em execução");
+            }else{
+                linha.add("Finalizado");
+            }
             modelo.addRow(linha);
         }
     }
     
-    
-    
-  
-
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -72,26 +72,25 @@ public class TelaResultadosBuscaOrc extends javax.swing.JFrame {
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null}
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null}
             },
             new String [] {
-                "Cod", "Cod Cliente", "Cod Funcionario", "Data Cadastro", "Descrição", "Valor"
+                "Cod", "Cod Cliente", "Cod Funcionario", "Data Cadastro", "Descrição", "Valor", "Status"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+                java.lang.Integer.class, java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false
+                false, false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -109,7 +108,7 @@ public class TelaResultadosBuscaOrc extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(jTable1);
 
-        jLabel1.setText("Lista de Orçamentos");
+        jLabel1.setText("Lista de Ordem de Serviços");
 
         jButton1.setText("Editar");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -118,7 +117,7 @@ public class TelaResultadosBuscaOrc extends javax.swing.JFrame {
             }
         });
 
-        jButton2.setText("Excluir");
+        jButton2.setText("Finalizar");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton2ActionPerformed(evt);
@@ -129,13 +128,6 @@ public class TelaResultadosBuscaOrc extends javax.swing.JFrame {
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton3ActionPerformed(evt);
-            }
-        });
-
-        jButton4.setText("Aprovar");
-        jButton4.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton4ActionPerformed(evt);
             }
         });
 
@@ -153,14 +145,12 @@ public class TelaResultadosBuscaOrc extends javax.swing.JFrame {
                 .addGap(301, 301, 301))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButton4)
-                .addGap(38, 38, 38)
                 .addComponent(jButton1)
                 .addGap(31, 31, 31)
                 .addComponent(jButton2)
                 .addGap(33, 33, 33)
                 .addComponent(jButton3)
-                .addGap(220, 220, 220))
+                .addGap(248, 248, 248))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -173,8 +163,7 @@ public class TelaResultadosBuscaOrc extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1)
                     .addComponent(jButton2)
-                    .addComponent(jButton3)
-                    .addComponent(jButton4))
+                    .addComponent(jButton3))
                 .addContainerGap())
         );
 
@@ -189,10 +178,10 @@ public class TelaResultadosBuscaOrc extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:[]
         int linha = jTable1.getSelectedRow();
-        orcselec = orcamentos.get(linha);
-        TelaEditarOrc p = new TelaEditarOrc();
-        p.recebeCod(orcselec, orcselec.getCodCliente());
-        p.setTitle("Editar Orçamento");
+        osSelec = ordemdeservicos.get(linha);
+        TelaEditarOS p = new TelaEditarOS();
+        p.recebeCod(osSelec, osSelec.getCodCliente());
+        p.setTitle("Editar OS");
         p.setVisible(true);
     }//GEN-LAST:event_jButton1ActionPerformed
 
@@ -200,12 +189,12 @@ public class TelaResultadosBuscaOrc extends javax.swing.JFrame {
         // TODO add your handling code here:
         int linha = jTable1.getSelectedRow();
         
-        orcselec = orcamentos.get(linha);
+        osSelec = ordemdeservicos.get(linha);
         int dialogButton = JOptionPane.YES_NO_OPTION;
-        int dialogResult = JOptionPane.showConfirmDialog (null, "Deseja realmente excluir o(a) cliente?","Cuidado", dialogButton);
+        int dialogResult = JOptionPane.showConfirmDialog (null, "Deseja realmente finalizar a ordem de serviço?","Cuidado", dialogButton);
         if(dialogResult == JOptionPane.YES_OPTION){
             // Saving code here
-            orcamentoDAO.excluir(orcselec);
+            ordemdeservicoDAO.finalizar(osSelec);
         }
         
     }//GEN-LAST:event_jButton2ActionPerformed
@@ -217,23 +206,6 @@ public class TelaResultadosBuscaOrc extends javax.swing.JFrame {
         p.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_jButton3ActionPerformed
-
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-    // TODO add your handling code here:
-    int linha = jTable1.getSelectedRow();
-    orcselec = orcamentos.get(linha);
-    int dialogButton = JOptionPane.YES_NO_OPTION;
-        int dialogResult = JOptionPane.showConfirmDialog (null, "Deseja realmente aprovar o orçamento?","Cuidado", dialogButton);
-        if(dialogResult == JOptionPane.YES_OPTION){
-            try {
-                // Saving code here
-                ordemdeservicoDAO.cadastrar(orcselec);
-                orcamentoDAO.excluir(orcselec);
-            } catch (SQLException ex) {
-                System.out.println(ex);
-            }
-        }
-    }//GEN-LAST:event_jButton4ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -252,14 +224,18 @@ public class TelaResultadosBuscaOrc extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(TelaResultadosBuscaOrc.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(TelaResultadosBuscaOS.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(TelaResultadosBuscaOrc.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(TelaResultadosBuscaOS.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(TelaResultadosBuscaOrc.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(TelaResultadosBuscaOS.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(TelaResultadosBuscaOrc.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(TelaResultadosBuscaOS.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
         //</editor-fold>
@@ -269,7 +245,7 @@ public class TelaResultadosBuscaOrc extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             @Override
             public void run() {
-                new TelaResultadosBuscaOrc().setVisible(true);    
+                new TelaResultadosBuscaOS().setVisible(true);    
             }
         });
     }
@@ -278,7 +254,6 @@ public class TelaResultadosBuscaOrc extends javax.swing.JFrame {
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;

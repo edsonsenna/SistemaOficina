@@ -18,21 +18,40 @@ import java.util.ArrayList;
  * @author 13151000162
  */
 public class OrcamentoDAO {
-     public void cadastrar(Orcamento orcamento){
+     public void cadastrar(Orcamento orcamento) throws SQLException{
         PreparedStatement sql;
+        int code = 0;
         try{
             sql=(PreparedStatement) BancoDados.getInstance().prepareStatement
-            ("insert into orcamento(idOrcamento, codCliente, codFuncionario, valorOrcamento, dataCadastro, descOrcamento) values (?, ?, ?, ?, ?, ?)");
-            sql.setInt(1,orcamento.getCod());
-            sql.setInt(2,orcamento.getCodCliente());
-            sql.setInt(3,orcamento.getCodFuncionario());
-            sql.setDouble(4,orcamento.getValor());
-            sql.setString(5,orcamento.getDataCadastro());
-            sql.setString(6,orcamento.getDescricao());
+            ("insert into orcamento(idOrcamento, codCliente, codFuncionario, valorOrcamento, dataCadastro, descOrcamento) values (null, ?, ?, ?, ?, ?)");
+            sql.setInt(1,orcamento.getCodCliente());
+            sql.setInt(2,orcamento.getCodFuncionario());
+            sql.setDouble(3,orcamento.getValor());
+            sql.setString(4,orcamento.getDataCadastro());
+            sql.setString(5,orcamento.getDescricao());
             sql.execute();
         }
         catch(SQLException ex) {
           System.out.println(ex);
+        }
+        sql=(PreparedStatement) BancoDados.getInstance().prepareStatement
+            ("select idOrcamento from Orcamento where codCliente="+orcamento.getCodCliente()+
+                    " and codFuncionario="+orcamento.getCodFuncionario() + " and valorOrcamento="+
+                    orcamento.getValor());
+        ResultSet rs = sql.executeQuery();
+        if(rs.next()){
+            code = rs.getInt("idOrcamento");
+        }
+        for(Integer pds: orcamento.getProds()){
+            try{
+                sql=(PreparedStatement) BancoDados.getInstance().prepareStatement
+                ("insert into orcamento_has_produto(idOrcamento_Produto, orcamento_idOrcamento, produto_idProduto) values (null, ?, ?)");
+                sql.setInt(1,code);
+                sql.setInt(2,pds);
+                sql.execute();
+            } catch(SQLException ex) {
+                System.out.println(ex);
+            }
         }
     }
     
@@ -138,7 +157,15 @@ public class OrcamentoDAO {
             ("DELETE from orcamento where idOrcamento=?");
             sql.setInt(1, orcamento.getCod());
             sql.execute();
-            
+        }
+        catch(SQLException ex){
+            System.out.println(ex);
+        }
+        try{
+            sql=(PreparedStatement) BancoDados.getInstance().prepareStatement 
+            ("DELETE from orcamento_has_produto where orcamento_has_produto.orcamento_idOrcamento=?");
+            sql.setInt(1, orcamento.getCod());
+            sql.execute();
         }
         catch(SQLException ex){
             System.out.println(ex);

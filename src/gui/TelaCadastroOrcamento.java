@@ -13,8 +13,11 @@ import bean.Produto;
 import dao.OrcamentoDAO;
 import dao.PessoaDAO;
 import dao.ProdutoDAO;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Vector;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.table.DefaultTableModel;
 
 /*
@@ -33,6 +36,8 @@ public class TelaCadastroOrcamento extends javax.swing.JFrame {
     private String codCliente;
     private String nomeCliente;
     private Produto produtobusca;
+    private ArrayList<Produto> listaProdutos = new ArrayList();
+    private ArrayList<Integer> listaProdutosCod = new ArrayList();
     private int cast=1;
 
     /**
@@ -83,6 +88,7 @@ public class TelaCadastroOrcamento extends javax.swing.JFrame {
         jTextField7 = new javax.swing.JTextField();
         jButton3 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
+        jButton5 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -206,6 +212,13 @@ public class TelaCadastroOrcamento extends javax.swing.JFrame {
             }
         });
 
+        jButton5.setText("Inicio");
+        jButton5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton5ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -272,9 +285,11 @@ public class TelaCadastroOrcamento extends javax.swing.JFrame {
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addGap(49, 49, 49))
             .addGroup(layout.createSequentialGroup()
-                .addGap(248, 248, 248)
+                .addGap(194, 194, 194)
                 .addComponent(jButton1)
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButton5)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -323,28 +338,35 @@ public class TelaCadastroOrcamento extends javax.swing.JFrame {
                     .addComponent(jLabel7)
                     .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(48, 48, 48)
-                .addComponent(jButton1))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton1)
+                    .addComponent(jButton5)))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
-    	Orcamento orcamento = new Orcamento();
-    	orcamento.setCodCliente(Integer.parseInt(jTextField2.getText()));
-    	orcamento.setCodFuncionario(Integer.parseInt(jTextField5.getText()));
-    	orcamento.setValor(Double.parseDouble(jTextField3.getText()));
-    	orcamento.setCod(Integer.parseInt(jTextField6.getText()));
-    	orcamento.setDataCadastro(jFormattedTextField1.getText());
-    	orcamento.setDescricao(jTextField4.getText());
-    	OrcamentoDAO orcamentoDAO = new OrcamentoDAO();
-    	orcamentoDAO.cadastrar(orcamento);
-        JOptionPane.showMessageDialog(frame, "Orçamento cadastrado com sucesso!");
-        TelaPrincipal p = new TelaPrincipal();
-        p.setTitle("Tela Principal");
-        p.setVisible(true);
-        this.dispose();
+        try {
+            // TODO add your handling code here:
+            Orcamento orcamento = new Orcamento();
+            orcamento.setCodCliente(Integer.parseInt(jTextField2.getText()));
+            orcamento.setCodFuncionario(Integer.parseInt(jTextField5.getText()));
+            orcamento.setValor(Double.parseDouble(jTextField3.getText()));
+            if(!jTextField6.getText().isEmpty()) orcamento.setCod(Integer.parseInt(jTextField6.getText()));
+            orcamento.setDataCadastro(jFormattedTextField1.getText());
+            orcamento.setDescricao(jTextField4.getText());
+            orcamento.setProds(listaProdutosCod);
+            OrcamentoDAO orcamentoDAO = new OrcamentoDAO();
+            orcamentoDAO.cadastrar(orcamento);
+            JOptionPane.showMessageDialog(frame, "Orçamento cadastrado com sucesso!");
+            TelaPrincipal p = new TelaPrincipal();
+            p.setTitle("Tela Principal");
+            p.setVisible(true);
+            this.dispose();
+        } catch (SQLException ex) {
+            System.out.println(ex);;
+        }
         
     }//GEN-LAST:event_jButton1ActionPerformed
 
@@ -392,27 +414,43 @@ public class TelaCadastroOrcamento extends javax.swing.JFrame {
         ProdutoDAO produtoDAO = new ProdutoDAO();
         produtos = produtoDAO.consultarN(jTextField7.getText());
         p.prodselec = this.produtobusca;
+        p.listaProd = this.listaProdutos;
+        p.listaProdCod = this.listaProdutosCod;
         p.RecebeVetor(produtos);
         p.setTitle("Seleção de produtos");
         p.setVisible(true);
-        //JOptionPane.showConfirmDialog(null, produtobusca.getNome());
-        System.out.println(produtobusca.getNome());
-        System.out.println();
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         // TODO add your handling code here:
         DefaultTableModel modelo = (DefaultTableModel) jTable1.getModel();
-        Vector linha = new Vector();  
-        linha.add(produtobusca.getCod());
-        linha.add(produtobusca.getNome());
-        linha.add(produtobusca.getValorVenda());
-        linha.add(produtobusca.getValorCompra());
-        linha.add(produtobusca.getQnt());
-        linha.add(produtobusca.getDescricao());
-        linha.add(produtobusca.getDataCadastro());
-        modelo.addRow(linha);
+        for(int i = 0; i < modelo.getRowCount(); i++){
+            for(int j = 0; j < modelo.getColumnCount(); j++){
+                modelo.setValueAt(null, i, j);
+            }
+        }
+        modelo.setNumRows(0);
+        Vector linha;
+        for(Produto prod: listaProdutos){
+            linha = new Vector();
+            linha.add(prod.getCod());
+            linha.add(prod.getNome());
+            linha.add(prod.getValorVenda());
+            linha.add(prod.getValorCompra());
+            linha.add(prod.getQnt());
+            linha.add(prod.getDescricao());
+            linha.add(prod.getDataCadastro());
+            modelo.addRow(linha);
+        }
     }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+        // TODO add your handling code here:
+        TelaPrincipal p = new TelaPrincipal();
+        p.setTitle("Tela Principal");
+        p.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_jButton5ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -455,6 +493,7 @@ public class TelaCadastroOrcamento extends javax.swing.JFrame {
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
+    private javax.swing.JButton jButton5;
     private javax.swing.JFormattedTextField jFormattedTextField1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;

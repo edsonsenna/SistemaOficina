@@ -39,7 +39,33 @@ public class FuncionarioDAO {
           System.out.println(ex);
         }
     }
-    
+    public ArrayList consultar(){
+        PreparedStatement sql; 
+        ArrayList funcionarios = new ArrayList();
+        try{
+                sql=(PreparedStatement) BancoDados.getInstance().prepareStatement
+                ("SELECT * FROM funcionario");
+                //sql.setString(1, param);
+                ResultSet rs = sql.executeQuery();
+                while(rs.next()){
+                    Funcionario funcionario = new Funcionario();
+                    funcionario.setCod(rs.getInt("idFuncionario"));
+                    funcionario.setNome(rs.getString("nomeFuncionario"));
+                    funcionario.setSexo(rs.getString("sexoFuncionario"));
+                    funcionario.setCpf(rs.getString("cpfFuncionario"));
+                    funcionario.setEnd(rs.getString("endFuncionario"));
+                    funcionario.setEmail(rs.getString("emailFuncionario"));
+                    funcionario.setSalario(rs.getDouble("salFuncionario"));
+                    funcionario.setSetor(rs.getString("setorFuncionario"));
+                    funcionario.setTel(rs.getString("telFuncionario"));
+                    funcionarios.add(funcionario);
+                }// fim do while
+        }
+        catch(SQLException ex) {
+          System.out.println(ex);
+        }
+        return funcionarios;
+    }
     public ArrayList consultar(String param){
         PreparedStatement sql; 
         ArrayList funcionarios = new ArrayList();
@@ -67,7 +93,33 @@ public class FuncionarioDAO {
         }
         return funcionarios;
     }
-    
+    public ArrayList consultar(int param){
+        PreparedStatement sql; 
+        ArrayList funcionarios = new ArrayList();
+        try{
+                sql=(PreparedStatement) BancoDados.getInstance().prepareStatement
+                ("SELECT * FROM funcionario where idFuncionario="+param);
+                //sql.setString(1, param);
+                ResultSet rs = sql.executeQuery();
+                while(rs.next()){
+                    Funcionario funcionario = new Funcionario();
+                    funcionario.setCod(rs.getInt("idFuncionario"));
+                    funcionario.setNome(rs.getString("nomeFuncionario"));
+                    funcionario.setSexo(rs.getString("sexoFuncionario"));
+                    funcionario.setCpf(rs.getString("cpfFuncionario"));
+                    funcionario.setEnd(rs.getString("endFuncionario"));
+                    funcionario.setEmail(rs.getString("emailFuncionario"));
+                    funcionario.setSalario(rs.getDouble("salFuncionario"));
+                    funcionario.setSetor(rs.getString("setorFuncionario"));
+                    funcionario.setTel(rs.getString("telFuncionario"));
+                    funcionarios.add(funcionario);
+                }// fim do while
+        }
+        catch(SQLException ex) {
+          System.out.println(ex);
+        }
+        return funcionarios;
+    }
     public void excluir (Funcionario funcionario){
         PreparedStatement sql;
         try{

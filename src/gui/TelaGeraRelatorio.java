@@ -1,7 +1,23 @@
 package gui;
 
 
+import bean.Funcionario;
+import bean.OrdemDeServico;
+import bean.Pessoa;
+import dao.FuncionarioDAO;
+import dao.OrdemDeServicoDAO;
+import dao.PessoaDAO;
 import java.awt.Component;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /*
@@ -40,16 +56,10 @@ public class TelaGeraRelatorio extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jRadioButton1 = new javax.swing.JRadioButton();
-        jRadioButton2 = new javax.swing.JRadioButton();
         jRadioButton3 = new javax.swing.JRadioButton();
         jRadioButton4 = new javax.swing.JRadioButton();
-        jLabel3 = new javax.swing.JLabel();
-        jRadioButton5 = new javax.swing.JRadioButton();
-        jRadioButton6 = new javax.swing.JRadioButton();
-        jLabel4 = new javax.swing.JLabel();
-        jRadioButton7 = new javax.swing.JRadioButton();
-        jRadioButton8 = new javax.swing.JRadioButton();
         jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -65,30 +75,11 @@ public class TelaGeraRelatorio extends javax.swing.JFrame {
             }
         });
 
-        groupPeriodo.add(jRadioButton2);
-        jRadioButton2.setText("Bimestral");
-
         groupPeriodo.add(jRadioButton3);
         jRadioButton3.setText("Semestral");
 
         groupPeriodo.add(jRadioButton4);
         jRadioButton4.setText("Anual");
-
-        jLabel3.setText("Tipo:");
-
-        groupTipo.add(jRadioButton5);
-        jRadioButton5.setText("Gráfico");
-
-        groupTipo.add(jRadioButton6);
-        jRadioButton6.setText("Planilha");
-
-        jLabel4.setText("Serviço:");
-
-        groupServico.add(jRadioButton7);
-        jRadioButton7.setText("Vendas");
-
-        groupServico.add(jRadioButton8);
-        jRadioButton8.setText("Compras");
 
         jButton1.setText("Gerar");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -97,41 +88,37 @@ public class TelaGeraRelatorio extends javax.swing.JFrame {
             }
         });
 
+        jButton2.setText("Inicio");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jRadioButton1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jRadioButton2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jRadioButton3)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jRadioButton4))
+                        .addContainerGap()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel1)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel2)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jRadioButton1)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jRadioButton3)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jRadioButton4))))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel3)
+                        .addGap(84, 84, 84)
+                        .addComponent(jButton1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jRadioButton5)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jRadioButton6))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel4)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jRadioButton7)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jRadioButton8)))
-                .addContainerGap(86, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButton1)
-                .addGap(168, 168, 168))
+                        .addComponent(jButton2)))
+                .addContainerGap(62, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -142,39 +129,169 @@ public class TelaGeraRelatorio extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
                     .addComponent(jRadioButton1)
-                    .addComponent(jRadioButton2)
                     .addComponent(jRadioButton3)
                     .addComponent(jRadioButton4))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 34, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3)
-                    .addComponent(jRadioButton5)
-                    .addComponent(jRadioButton6))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel4)
-                    .addComponent(jRadioButton7)
-                    .addComponent(jRadioButton8))
-                .addGap(75, 75, 75)
-                .addComponent(jButton1)
-                .addContainerGap(84, Short.MAX_VALUE))
+                    .addComponent(jButton1)
+                    .addComponent(jButton2))
+                .addGap(30, 30, 30))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void jRadioButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton1ActionPerformed
-        // TODO add your handling code here:
+        
     }//GEN-LAST:event_jRadioButton1ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
+        try {
+            // TODO add your handling code here:
+            FileWriter arq = new FileWriter("relatorio.txt");
+            PrintWriter pw = new PrintWriter(arq);
+            ArrayList<OrdemDeServico> odss = new ArrayList();
+            ArrayList<Pessoa> clientes = new ArrayList();
+            ArrayList<Funcionario> funcionarios = new ArrayList();
+            
+            OrdemDeServicoDAO odsDAO = new OrdemDeServicoDAO();
+            FuncionarioDAO funcDAO = new FuncionarioDAO();
+            PessoaDAO clienteDAO = new PessoaDAO();
+            String[] meses = {"Janeiro","Fevereiro","Março","Abril","Maio","Junho","Julho","Agosto",
+            "Setembro","Outubro","Novembro", "Dezembro"};
+            GregorianCalendar d = new GregorianCalendar();
+            pw.println("Relatório gerado no dia " + d.get(Calendar.DAY_OF_MONTH)+"/"+(d.get(Calendar.MONTH)+1)+
+                    "/"+d.get(Calendar.YEAR) + " as " + d.get(Calendar.HOUR)+":"+d.get(Calendar.MINUTE)+
+                    ":"+d.get(Calendar.SECOND));
+            odss = odsDAO.consultar();
+            double valorTotal = 0;
+            int totalOS = 0;
+            if(jRadioButton1.isSelected()){
+                String[] dataS;
+                pw.println("");
+                for(int i = 1; i <= 12; i++){
+                    double totalValorMes = 0;
+                    int totalOSMes = 0;
+                    pw.println(meses[i-1]);
+                    pw.println("");
+                    pw.println("Cliente\tFuncionário\tValor\tData");
+                    pw.println("");
+                    for(OrdemDeServico o: odss){
+                        dataS = o.getDataCadastro().split("/");
+                        if(dataS[1].equals(i < 10 ? "0"+i : i)){
+                            pw.println(((ArrayList<Pessoa>)clienteDAO.consultar(o.getCodCliente())).get(0).getNome()+
+                                    "\t"+((ArrayList<Funcionario>)funcDAO.consultar(o.getCodFuncionario())).get(0).getNome()+
+                                    "\t\t"+o.getValor()+"\t"+o.getDataCadastro());
+                            totalValorMes+=o.getValor();
+                            valorTotal +=o.getValor();
+                            totalOS++;
+                            totalOSMes++;
+                        }
+                    }
+                    pw.println("");
+                    pw.println("Valor total de serviços no mês: " + totalOSMes);
+                    pw.println("Valor total no mês: " + totalValorMes);
+                    pw.println("");
+                    pw.println("----------------------------------------------");
+                }
+                pw.println("Valor total: " + valorTotal);
+                pw.println("Total de serviços: " + totalOS);
+                pw.close();
+            }
+            if(jRadioButton3.isSelected()){
+                String[] dataS;
+                pw.println("");
+                for(int i = 1; i <= 2; i++){
+                    double totalValorSem = 0;
+                    int totalOSSem = 0;
+                    pw.println("Semestre "+i);
+                    pw.println("");
+                    pw.println("Cliente\tFuncionário\tValor\tData");
+                    pw.println("");
+                    for(OrdemDeServico o: odss){
+                        dataS = o.getDataCadastro().split("/");
+                        if(i == 1){
+                            if(Integer.parseInt(dataS[1]) <= 6){
+                                pw.println(((ArrayList<Pessoa>)clienteDAO.consultar(o.getCodCliente())).get(0).getNome()+
+                                    "\t"+((ArrayList<Funcionario>)funcDAO.consultar(o.getCodFuncionario())).get(0).getNome()+
+                                    "\t\t"+o.getValor()+"\t"+o.getDataCadastro());
+                                totalValorSem+=o.getValor();
+                                totalOSSem++;
+                                valorTotal +=o.getValor();
+                                totalOS++;
+                            }
+                        }
+                        else{
+                            if(Integer.parseInt(dataS[1]) > 6){
+                                pw.println(((ArrayList<Pessoa>)clienteDAO.consultar(o.getCodCliente())).get(0).getNome()+
+                                    "\t"+((ArrayList<Funcionario>)funcDAO.consultar(o.getCodFuncionario())).get(0).getNome()+
+                                    "\t\t"+o.getValor()+"\t"+o.getDataCadastro());
+                                totalValorSem+=o.getValor();
+                                totalOSSem++;
+                                valorTotal+=o.getValor();
+                                totalOS++;
+                            }
+                        }
+                    }
+                    pw.println("");
+                    pw.println("Valor total de serviços no semestre: " + totalOSSem);
+                    pw.println("Total de serviços no semestre: " + totalValorSem);
+                    pw.println("");
+                    pw.println("----------------------------------------------");
+                }
+                pw.println("Valor total: " + valorTotal);
+                pw.println("Total de serviços: " + totalOS);
+                pw.close();
+            }
+            if(jRadioButton4.isSelected()){
+                String[] dataS;
+                pw.println("");
+                for(int i = 2015; i <= 2017; i++){
+                    double totalValorAno = 0;
+                    int totalOSAno = 0;
+                    pw.println("Ano "+i);
+                    pw.println("");
+                    pw.println("Cliente\tFuncionário\tValor\tData");
+                    pw.println("");
+                    for(OrdemDeServico o: odss){
+                        dataS = o.getDataCadastro().split("/");
+                        if(dataS[2].equals(i+"")){
+                            pw.println(((ArrayList<Pessoa>)clienteDAO.consultar(o.getCodCliente())).get(0).getNome()+
+                                "\t"+((ArrayList<Funcionario>)funcDAO.consultar(o.getCodFuncionario())).get(0).getNome()+
+                                "\t\t"+o.getValor()+"\t"+o.getDataCadastro());
+                            totalValorAno+=o.getValor();
+                            totalOSAno++;
+                        }
+                    }
+                    pw.println("");
+                    pw.println("Valor total de serviços no ano: " + totalOSAno);
+                    pw.println("Total de serviços no ano: " + totalValorAno);
+                    pw.println("");
+                    pw.println("----------------------------------------------");
+                }
+                pw.println("Valor total: " + valorTotal);
+                pw.println("Total de serviços: " + totalOS);
+                pw.close();
+            }
+            
+        } catch (IOException ex) {
+            System.out.println(ex);
+        }
         JOptionPane.showMessageDialog(frame, "Relatório gerado com sucesso!");
         TelaPrincipal p = new TelaPrincipal();
         p.setTitle("Tela Principal");
         p.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+        TelaPrincipal p = new TelaPrincipal();
+        p.setTitle("Tela Principal");
+        p.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -217,17 +334,11 @@ public class TelaGeraRelatorio extends javax.swing.JFrame {
     private javax.swing.ButtonGroup groupServico;
     private javax.swing.ButtonGroup groupTipo;
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
     private javax.swing.JRadioButton jRadioButton1;
-    private javax.swing.JRadioButton jRadioButton2;
     private javax.swing.JRadioButton jRadioButton3;
     private javax.swing.JRadioButton jRadioButton4;
-    private javax.swing.JRadioButton jRadioButton5;
-    private javax.swing.JRadioButton jRadioButton6;
-    private javax.swing.JRadioButton jRadioButton7;
-    private javax.swing.JRadioButton jRadioButton8;
     // End of variables declaration//GEN-END:variables
 }

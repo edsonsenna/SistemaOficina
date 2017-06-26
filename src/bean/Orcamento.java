@@ -1,5 +1,7 @@
 package bean;
 
+import java.util.ArrayList;
+
 public class Orcamento {
 	private int codCliente;
 	private int codFuncionario;
@@ -7,6 +9,9 @@ public class Orcamento {
 	private int cod;
 	private String dataCadastro;
 	private String descricao;
+        private ArrayList<Integer> prods;
+
+   
         public int getCodCliente() {
         return codCliente;
         }
@@ -45,6 +50,11 @@ public class Orcamento {
 	public void setDescricao(String descricao) {
 		this.descricao = descricao;
 	}
-	
-	
+	 public ArrayList<Integer> getProds() {
+            return prods;
+        }
+
+        public void setProds(ArrayList<Integer> prods) {
+            this.prods = prods;
+        }
 }

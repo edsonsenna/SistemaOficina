@@ -20,7 +20,7 @@ public class BancoDados {
             //comando para fazer conexao via JDBC com um banco mysql
             //sendo informado o servidor 
             // + o nome da base de dados, o usuario e a senha.
-            BancoDados = DriverManager.getConnection("jdbc:mysql://localhost:3306/" + fonte, "root", "");
+            BancoDados = DriverManager.getConnection("jdbc:mysql://localhost:3306/" + fonte, "root", "0000");
 
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
